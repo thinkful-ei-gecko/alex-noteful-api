@@ -1,17 +1,40 @@
-# Express Boilerplate
+# Noteful App
 
-This is a boilerplate used for starting new express projects.
+Whoopee.
 
-## Set up
+## Process
 
-Complete the following steps to start a new project (NEW-PROJECT-NAME):
+### Server Set-Up
 
-1. Clone this repository to your local machine `git clone BOILERPLATE-URL NEW-PROJECTS-NAME`
-2. `cd` into the cloned repository.
-3. Make a fresh start of the git history for this project with `rm -rf .git && git init`
-4. Install the node dependencies `npm install`
-5. Move the example Environment file to `.env` that will be ignored by git and read by the express server `mv example.env .env`
-6. Edit the contents of the `package.json` to use NEW-PROJECT-NAME instead of `"name": "express-boilerplate",`
+- Run expressclone.
+- Create dbs
+- Install pg and postgrator-cli (devDependency) for SQL migration
+- Install knex and xss for testing.
+- Update .env with DB and TESTDB URLs. (postgresql://localhost/username@dbname)
+- Write `postgrator-config.js`
+
+```javascript
+require('dotenv').config();
+
+module.exports = {
+  "migrationsDirectory": "migrations",
+  "driver": "pg",
+  "connectionString": (process.env.NODE_ENV === 'test')
+    ? process.env.TEST_DB_URL
+    : process.env.DB_URL,
+};
+```
+
+- Update package.json scripts with migrate and migrate:test.
+
+    `"migrate": "postgrator --config postgrator-config.js",`
+
+    `"migrate:test": "env NODE_ENV=test npm run migrate",`
+
+### DB Design and Migration
+
+- Sketch ERD structure. Consider foreign key constraints, normalizing, one-to-many vs. many-to-many. Do I need a relationship table? Do I need to alter tables for foreign references?
+- Write initial migrations to create tables. Iterate to test out your database erd.
 
 ## Scripts
 

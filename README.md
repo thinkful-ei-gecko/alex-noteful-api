@@ -34,7 +34,13 @@ module.exports = {
 ### DB Design and Migration
 
 - Sketch ERD structure. Consider foreign key constraints, normalizing, one-to-many vs. many-to-many. Do I need a relationship table? Do I need to alter tables for foreign references?
-- Write initial migrations to create tables. Iterate to test out your database erd.
+- Write initial migrations to create tables. Iterate to test out your database ERD.
+- Write a seed file following the structure to run tests with down the road (can you pull this from front end?).
+
+### Service Objects
+
+- Create directories and service.js files for each object.
+- Determine necessary CRUD operations and write functions that will interact with the database.
 
 ## Scripts
 

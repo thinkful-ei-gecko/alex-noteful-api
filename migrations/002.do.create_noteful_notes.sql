@@ -1,0 +1,15 @@
+DROP TABLE IF EXISTS notes;
+
+CREATE TABLE notes (
+  id uuid PRIMARY KEY DEFAULT uuid_generate_v4(),
+  name TEXT NOT NULL,
+  modified TIMESTAMP DEFAULT now() NOT NULL,
+  content TEXT NOT NULL
+);
+
+ALTER TABLE
+  notes
+ADD
+  COLUMN folders_id uuid REFERENCES folders(id) ON DELETE
+SET
+  NULL;

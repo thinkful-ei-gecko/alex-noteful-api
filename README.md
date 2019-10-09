@@ -9,8 +9,25 @@ Whoopee.
 - Run expressclone.
 - Create dbs
 - Install pg and postgrator-cli (devDependency) for SQL migration
-- Install knex and xss for testing.
+- Install knex and xss for testing and server utility.
 - Update .env with DB and TESTDB URLs. (postgresql://localhost/username@dbname)
+- Modify server.js to require knex and create the const `db`, which establishes a client (pg) and connection (DB_URL) for knex. Call DB_URL from `require('./config')` and inject into app with `app.set` before the listen:
+
+```javascript
+const knex = require('knex');
+...
+const { PORT, DB_URL } = require('./config');
+
+const db = knex({
+  client: 'pg',
+  connection: DB_URL
+});
+
+app.set('db', db);
+...
+
+```
+
 - Write `postgrator-config.js`
 
 ```javascript
@@ -39,8 +56,20 @@ module.exports = {
 
 ### Service Objects
 
-- Create directories and service.js files for each object.
-- Determine necessary CRUD operations and write functions that will interact with the database.
+- Create directories and NAME-service.js files for each object.
+- Determine necessary CRUD operations and write functions that will interact as expected with the database.
+
+### Routers
+
+- Add NAME-router.js files for each directory (In my bash, I wrote a script (routerreq NAME), which generates a `NAME-router.js` file with all the required constants). Create `NAME-endpoints.spec.js` and `NAME.fixtures.js` files in test directory for each object.
+
+```javascript
+const express = require('express'),
+  xss = require('xss'),
+  FoldersService = require('./folders-service'),
+  foldersRouter = express.Router(),
+  jsonParser = express.json();
+```
 
 ## Scripts
 

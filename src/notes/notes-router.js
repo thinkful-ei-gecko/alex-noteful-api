@@ -9,7 +9,7 @@ const express = require('express'),
 const serializeNote = note => ({
   id: note.id,
   name: xss(note.name),
-  modified: note.modified,
+  modified: note.modified || null,
   content: xss(note.content),
   folder_id: note.folder_id
 });

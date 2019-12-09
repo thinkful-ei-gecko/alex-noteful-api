@@ -1,4 +1,7 @@
+const xss = require('xss');
+
 const NotesService = {
+
   getAllNotes(knex) {
     return knex.from('notes').select('*');
   },
@@ -6,6 +9,7 @@ const NotesService = {
     return knex
       .into('notes')
       .insert(newNote)
+      .returning('*')
       .then(rows => {
         return rows[0];
       });
@@ -17,7 +21,10 @@ const NotesService = {
       .first();
   },
   deleteNote(knex, id) {
-    return knex('notes').delete(id);
+    return knex('notes').delete({ id })
+      .then(res => {
+        return res.status(204).end();
+      });
   },
   updateNote(knex, id, newNotesFields) {
     return knex('notes')

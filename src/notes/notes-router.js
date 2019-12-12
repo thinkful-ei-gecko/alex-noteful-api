@@ -9,7 +9,7 @@ const express = require('express'),
 const serializeNote = note => ({
   id: note.id,
   name: xss(note.name),
-  modified: note.modified || null,
+  modified: new Date(note.modified),
   content: xss(note.content),
   folder_id: note.folder_id
 });
@@ -26,6 +26,8 @@ notesRouter
   .post(jsonParser, (req, res, next) => {
     const { name, content, folder_id } = req.body,
       newNote = { name, content, folder_id };
+    
+      console.log(newNote);
 
     const folder = FolderService.getById(req.app.get('db'), newNote.folder_id);
 
@@ -102,11 +104,13 @@ notesRouter
 
   })
   .delete((req, res, next) => {
+    console.log('In delete!');
+    console.log(req.params);
     NotesService.deleteNote(
       req.app.get('db'),
       req.params.noteId
     )
-      .then(res => {
+      .then(() => {
         res.status(204).end();
       })
       .catch(next);
